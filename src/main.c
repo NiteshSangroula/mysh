@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "../include/executor.h"
 #include "../include/parser.h"
 
 #define MAX_SIZE 100
@@ -19,6 +20,10 @@ int main(int argc, char* argv[]) {
 
         char* args[MAX_ARGS];
         int length = parse_string(command, args);  // this changes the command
+
+        if (args[0] != NULL) {
+            execute_command(args);
+        }
 
         printf("[ ");
         for (int i = 0; i <= length; i++) {
