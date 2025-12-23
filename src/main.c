@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "../include/executor.h"
+#include "../include/builtins.h"
 #include "../include/parser.h"
 
 #define MAX_SIZE 100
@@ -11,25 +11,22 @@ int main(int argc, char* argv[]) {
     (void)argv;
 
     char command[MAX_SIZE] = "";
-    char exit_command[] = "exit";
 
-    while (strcmp(command, exit_command)) {
+    while (1) {
         printf("mysh> ");
         fgets(command, MAX_SIZE, stdin);
         command[strcspn(command, "\n")] = '\0';
 
         char* args[MAX_ARGS];
-        int length = parse_string(command, args);  // this changes the command
 
-        if (args[0] != NULL) {
-            execute_command(args);
-        }
+        // parse the command
+        parse_string(command, args);
 
-        printf("[ ");
-        for (int i = 0; i <= length; i++) {
-            printf("%s ", args[i]);
-        }
-        printf("]\n");
+        // check if the command is built in
+        is_builtin(command);
+
+        // executes the command
+        execute_builtin(args);
     }
 
     return 0;
